@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:volunteerapp/core/app_export.dart';
+import 'package:volunteerapp/core/services/api_login.dart';
 import 'package:volunteerapp/presentation/bottomnavigation_screen/bottomnavigation_screen.dart';
 import 'package:volunteerapp/widgets/custom_elevated_button.dart';
 import 'package:volunteerapp/widgets/custom_icon_button.dart';
@@ -128,16 +129,18 @@ class LoginScreen extends StatelessWidget {
                               style: theme.textTheme.headlineMedium))),
                   SizedBox(height: 40.v),
                   CustomTextFormField(
-                      controller: phoneController,
-                      hintText: "Phone or email",
-                      textInputType: TextInputType.emailAddress),
+                    controller: phoneController,
+                    hintText: "Username or email",
+                    textInputType: TextInputType.emailAddress,
+                  ),
                   SizedBox(height: 8.v),
                   CustomTextFormField(
-                      controller: passwordController,
-                      hintText: "Password",
-                      textInputAction: TextInputAction.done,
-                      textInputType: TextInputType.visiblePassword,
-                      obscureText: true),
+                    controller: passwordController,
+                    hintText: "Password",
+                    textInputAction: TextInputAction.done,
+                    textInputType: TextInputType.visiblePassword,
+                    obscureText: true,
+                  ),
                   SizedBox(height: 20.v),
                   Align(
                       alignment: Alignment.centerRight,
@@ -150,12 +153,9 @@ class LoginScreen extends StatelessWidget {
                   CustomElevatedButton(
                       text: "Login",
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  BottomnavigationScreen()), // Replace 'NextPage' with your actual widget
-                        );
+                        APILogin apiLogin = APILogin();
+                        apiLogin.login(phoneController.text,
+                            passwordController.text, context);
                       },
                       buttonTextStyle: CustomTextStyles.titleMediumWhiteA700)
                 ])));

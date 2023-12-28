@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:volunteerapp/core/app_export.dart';
+import 'package:volunteerapp/core/services/api_resgister.dart';
 import 'package:volunteerapp/widgets/custom_elevated_button.dart';
 import 'package:volunteerapp/widgets/custom_text_form_field.dart';
 
@@ -12,6 +13,7 @@ class SignupScreen extends StatelessWidget {
   TextEditingController userNameController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
+  TextEditingController password2Controller = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -37,7 +39,7 @@ class SignupScreen extends StatelessWidget {
                               margin: EdgeInsets.only(left: 100.h)),
                           SizedBox(height: 10.v),
                           SizedBox(
-                              height: 527.v,
+                              height: 570.v,
                               width: 382.h,
                               child: Stack(
                                   alignment: Alignment.topCenter,
@@ -96,12 +98,12 @@ class SignupScreen extends StatelessWidget {
                           style: theme.textTheme.headlineMedium))),
               SizedBox(height: 35.v),
               CustomTextFormField(
+                  controller: userNameController, hintText: "Username"),
+              SizedBox(height: 8.v),
+              CustomTextFormField(
                   controller: phoneController,
                   hintText: "Phone or email",
                   textInputType: TextInputType.emailAddress),
-              SizedBox(height: 8.v),
-              CustomTextFormField(
-                  controller: userNameController, hintText: "Username"),
               SizedBox(height: 8.v),
               CustomTextFormField(
                   controller: passwordController,
@@ -109,10 +111,32 @@ class SignupScreen extends StatelessWidget {
                   textInputAction: TextInputAction.done,
                   textInputType: TextInputType.visiblePassword,
                   obscureText: true),
-              SizedBox(height: 108.v),
+              SizedBox(height: 8.v),
+              CustomTextFormField(
+                  controller: password2Controller,
+                  hintText: "Password Again",
+                  textInputAction: TextInputAction.done,
+                  textInputType: TextInputType.visiblePassword,
+                  obscureText: true),
+              SizedBox(height: 84.v),
               CustomElevatedButton(
-                  text: "Create Account",
-                  buttonTextStyle: CustomTextStyles.titleMediumWhiteA700)
+                text: "Create Account",
+                buttonTextStyle: CustomTextStyles.titleMediumWhiteA700,
+                onPressed: () {
+                  APIRegister remoteRegister = APIRegister();
+                  String textUsername = userNameController.text;
+                  String txtphone = phoneController.text;
+                  String password1 = passwordController.text;
+                  String password2 = password2Controller.text;
+                  Map<String, dynamic> registrationData = {
+                    "username": textUsername,
+                    "email": txtphone,
+                    "password1": password1,
+                    "password2": password1,
+                  };
+                  remoteRegister.register(registrationData, context);
+                },
+              )
             ])));
   }
 

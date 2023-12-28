@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:volunteerapp/core/app_export.dart';
+import 'package:volunteerapp/main.dart';
 import 'package:volunteerapp/presentation/editprofile_screen/editprofile_screen.dart';
+import 'package:volunteerapp/presentation/login_screen/login_screen.dart';
+import 'package:volunteerapp/widgets/custom_bottom_bar.dart';
 import 'package:volunteerapp/widgets/custom_elevated_button.dart';
 import 'package:volunteerapp/widgets/custom_icon_button.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  final VoidCallback? onLogoutPressed;
+
+  const ProfileScreen({Key? key, this.onLogoutPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +45,14 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(height: 95.v),
                 _buildFortyNineSection(context),
                 SizedBox(height: 43.v),
-                CustomElevatedButton(text: "Logoout")
+                CustomElevatedButton(
+                    text: "Logout",
+                    onPressed: () {
+                      _removeToken();
+                      // Sử dụng Provider để cập nhật trạng thái
+                      onLogoutPressed?.call();
+                    },
+                    buttonTextStyle: CustomTextStyles.titleMediumWhiteA700)
               ]))
     ]))));
   }
@@ -83,6 +97,11 @@ class ProfileScreen extends StatelessWidget {
                 ))
           ]))
     ]);
+  }
+
+  Future<void> _removeToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('token'); // Remove the token from shared preferences
   }
 
   /// Section Widget

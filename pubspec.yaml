@@ -1,27 +1,31 @@
 name: volunteerapp
 description: A new Flutter project.
 version: 1.0.0+1
-environment: 
-  sdk: '>=2.12.0 <3.0.0'
-dependencies: 
-  flutter: 
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+dependencies:
+  flutter:
     sdk: flutter
   cached_network_image: ^3.2.1
   flutter_svg: ^1.1.6
   carousel_slider: ^4.0.0
   smooth_page_indicator: ^1.0.0+2
   intl: ^0.18.0
-dev_dependencies: 
-  flutter_test: 
+  http: ^1.1.0
+  shared_preferences: ^2.2.2
+  flutter_riverpod: ^2.4.9
+  provider: ^6.1.1
+dev_dependencies:
+  flutter_test:
     sdk: flutter
-flutter: 
+flutter:
   uses-material-design: true
-  assets: 
+  assets:
     - assets/
     - assets/images/
-  fonts: 
+  fonts:
     - family: Montserrat
-      fonts: 
+      fonts:
         - asset: assets/fonts/MontserratSemiBold.ttf
           weight: 600
         - asset: assets/fonts/MontserratBold.ttf
@@ -29,6 +33,6 @@ flutter:
         - asset: assets/fonts/MontserratMedium.ttf
           weight: 500
     - family: Inter
-      fonts: 
+      fonts:
         - asset: assets/fonts/InterMedium.ttf
           weight: 500
