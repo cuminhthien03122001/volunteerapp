@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:volunteerapp/core/services/api_volunteeractivity.dart';
 import 'dart:convert';
 
 import 'package:volunteerapp/routes/app_routes.dart';
@@ -37,20 +38,13 @@ class APILogin {
         print(loginData);
         // Extract the token from the response
         final token = loginData['key']; // Replace with the actual token key
-
         // Save the token using shared preferences
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
         // Navigate to Home page
+
         Navigator.pushReplacementNamed(
             context, AppRoutes.bottomnavigationScreen);
-
-        // Retrieving the token later
-//         final prefs = await SharedPreferences.getInstance();
-//         final token = prefs.getString('token');
-
-// // Use the token for subsequent API calls
-//         http.get(url, headers: {'Authorization': 'Bearer $token'});
       } else {
         // Handle error
         showDialog(
@@ -73,20 +67,5 @@ class APILogin {
       print('Login error: $error');
       // Handle network or other errors here
     }
-    // try {
-    //   final token = await checkToken();
-    //   if (token != null) {
-    //     // Token exists, use it for API calls or other purposes
-    //     print('Saved token: $token');
-    //     http.get(Uri.parse(_apiUrl),
-    //         headers: {'Authorization': 'Bearer $token'});
-    //   } else {
-    //     // Token not found, handle accordingly
-    //     print('No token found.');
-    //   }
-    // } catch (error) {
-    //   print('Error checking token: $error');
-    //   // Handle errors gracefully
-    // }
   }
 }

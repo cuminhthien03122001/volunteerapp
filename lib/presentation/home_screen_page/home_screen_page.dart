@@ -183,10 +183,10 @@ class HomeScreenPageState extends State<HomeScreenPage>
               child: TabBarView(
                 controller: tabviewController,
                 children: [
-                  TabviewPage(),
-                  TabviewPage(),
-                  TabviewPage(),
-                  TabviewPage(),
+                  TabviewPage(tags: ["Education"]),
+                  TabviewPage(tags: ["Health"]),
+                  TabviewPage(tags: ["Animal"]),
+                  TabviewPage(tags: ["Environment"]),
                 ],
               ),
             ),

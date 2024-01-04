@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:volunteerapp/core/app_export.dart';
+import 'package:volunteerapp/core/models/volunteerActivity.dart';
 import 'package:volunteerapp/presentation/inputnumber_screen_bottomsheet/inputnumber_screen_bottomsheet.dart';
 import 'package:volunteerapp/presentation/paysuccess_screen_bottomsheet/paysuccess_screen_bottomsheet.dart';
 import 'package:volunteerapp/widgets/custom_elevated_button.dart';
 import 'package:volunteerapp/widgets/custom_icon_button.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({Key? key}) : super(key: key);
+  final VolunteerActivity activity;
+
+  const DetailScreen({Key? key, required this.activity}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +28,7 @@ class DetailScreen extends StatelessWidget {
                   Container(
                       width: 364.h,
                       margin: EdgeInsets.only(left: 16.h, right: 33.h),
-                      child: Text(
-                          "Build Tomorrow's Leaders: Volunteer in Education Today!",
+                      child: Text(activity.name,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: CustomTextStyles.titleLargeBlack900)),
@@ -95,7 +97,7 @@ class DetailScreen extends StatelessWidget {
         width: double.maxFinite,
         child: Stack(alignment: Alignment.topLeft, children: [
           CustomImageView(
-              imagePath: ImageConstant.imgImage32348x414,
+              imagePath: activity.image,
               height: 348.v,
               width: 414.h,
               radius: BorderRadius.vertical(bottom: Radius.circular(32.h)),

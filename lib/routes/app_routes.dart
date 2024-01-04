@@ -6,7 +6,6 @@ import 'package:volunteerapp/presentation/onbroading_screen/onbroading_screen.da
 import 'package:volunteerapp/presentation/signup_screen/signup_screen.dart';
 import 'package:volunteerapp/presentation/login_screen/login_screen.dart';
 import 'package:volunteerapp/presentation/bottomnavigation_screen/bottomnavigation_screen.dart';
-import 'package:volunteerapp/presentation/detail_screen/detail_screen.dart';
 import 'package:volunteerapp/presentation/paymethod_screen/paymethod_screen.dart';
 import 'package:volunteerapp/presentation/explore_screen/explore_screen.dart';
 import 'package:volunteerapp/presentation/activity_screen/activity_screen.dart';
@@ -57,7 +56,6 @@ class AppRoutes {
     signupScreen: (context) => SignupScreen(),
     loginScreen: (context) => LoginScreen(),
     bottomnavigationScreen: (context) => BottomnavigationScreen(),
-    detailScreen: (context) => DetailScreen(),
     paymethodScreen: (context) => PaymethodScreen(),
     exploreScreen: (context) => ExploreScreen(),
     activityScreen: (context) => ActivityScreen(),
