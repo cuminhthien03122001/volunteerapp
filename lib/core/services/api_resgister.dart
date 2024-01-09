@@ -23,6 +23,7 @@ class APIRegister {
       if (response.statusCode == 200) {
         // Successful registration
         print('Registration successful: ${response.body}');
+        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
         // Handle successful registration response here
         Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
       } else {

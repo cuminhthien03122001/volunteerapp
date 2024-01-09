@@ -1,59 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:volunteerapp/core/app_export.dart';
+import 'package:volunteerapp/core/models/volunteerActivity.dart';
+import 'package:volunteerapp/widgets/app_bar/appbar_leading_image.dart';
+import 'package:volunteerapp/widgets/app_bar/appbar_title.dart';
+import 'package:volunteerapp/widgets/app_bar/custom_app_bar.dart';
 import 'package:volunteerapp/widgets/custom_elevated_button.dart';
 import 'package:volunteerapp/widgets/custom_radio_button.dart';
 
-class PaymethodScreen extends StatelessWidget {
-  PaymethodScreen({Key? key})
-      : super(
-          key: key,
-        );
+class PaymethodScreen extends StatefulWidget {
+  final VolunteerActivity activity;
 
+  PaymethodScreen({Key? key, required this.activity}) : super(key: key);
+
+  @override
+  _PaymethodScreenState createState() => _PaymethodScreenState();
+}
+
+class _PaymethodScreenState extends State<PaymethodScreen> {
+  TextEditingController _controller = TextEditingController();
   String radioGroup = "";
 
   @override
-  Widget build(BuildContext context) {
-    mediaQueryData = MediaQuery.of(context);
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          width: double.maxFinite,
-          padding: EdgeInsets.symmetric(vertical: 11.v),
-          child: Column(
-            children: [
-              SizedBox(height: 20.v),
-              CustomImageView(
-                height: 12.v,
-                margin: EdgeInsets.only(left: 16.h),
-              ),
-              SizedBox(height: 23.v),
-              SizedBox(height: 20.v),
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16.h),
+        resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          child: Container(
+            width: double.maxFinite,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                Container(
                   decoration: AppDecoration.fillWhiteA.copyWith(
                     borderRadius: BorderRadiusStyle.customBorderBL48,
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildBuildTomorrowSection(context),
-                      SizedBox(height: 36.v),
-                      CustomElevatedButton(
-                        text: "Donate as anonymous",
-                        buttonTextStyle:
-                            CustomTextStyles.titleMediumOnPrimaryBold_1,
-                      ),
-                      SizedBox(height: 41.v),
-                      _buildPaymentMethodSection(context),
-                      Spacer(),
-                      _buildTotalSection(context),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildAppBar(context),
+                        SizedBox(height: 36.v),
+                        _buildBuildTomorrowSection(context),
+                        SizedBox(height: 40.v),
+                        TextField(
+                          keyboardType: TextInputType.number,
+                          controller: _controller,
+                          decoration: InputDecoration(
+                            labelText: 'Enter the amount',
+                            prefixText: '\$ ',
+                            hintText: '0.00',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        SizedBox(height: 40.v),
+                        _buildPaymentMethodSection(context),
+                        SizedBox(height: 32.v),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(height: 20.v),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: _buildDonateButton(context),
@@ -61,237 +78,165 @@ class PaymethodScreen extends StatelessWidget {
     );
   }
 
-  /// Section Widget
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    return CustomAppBar(
+      height: 25.v,
+      leadingWidth: 23.h,
+      leading: AppbarLeadingImage(
+        imagePath: ImageConstant.imgVectorBlack900,
+        margin: EdgeInsets.only(left: 16.h, top: 7.v, bottom: 5.v),
+        onTap: () {
+          onTapArrowLeft(context);
+        },
+      ),
+      centerTitle: true,
+      title: AppbarTitle(text: "Donate"),
+    );
+  }
+
   Widget _buildBuildTomorrowSection(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: EdgeInsets.only(right: 18.h),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomImageView(
-              imagePath: ImageConstant.imgImage32,
-              height: 76.v,
-              width: 120.h,
-              radius: BorderRadius.circular(
-                8.h,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 11.h,
-                bottom: 19.v,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 232.h,
-                    child: Text(
-                      "Build Tomorrow's Leaders: Volunteer in Education Today!",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.labelLarge,
-                    ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomImageView(
+            imagePath: widget.activity.image,
+            height: 76.v,
+            width: 120.h,
+            radius: BorderRadius.circular(8.h),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 11.h, bottom: 19.v),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 232.h,
+                  child: Text(
+                    widget.activity.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.labelLarge,
                   ),
-                  SizedBox(height: 8.v),
-                  Text(
-                    "By: HT Organization",
-                    style: CustomTextStyles.labelLargeGray400,
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(height: 8.v),
+                Text(
+                  "By: HT Organization",
+                  style: CustomTextStyles.labelLargeGray400,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  /// Section Widget
   Widget _buildPaymentMethodSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.only(left: 6.h),
-          child: Text(
-            "Payment Method",
-            style: CustomTextStyles.titleLargeBlack900,
-          ),
-        ),
-        SizedBox(height: 44.v),
-        Padding(
-          padding: EdgeInsets.only(left: 6.h),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 10.h,
-                  right: 5.h,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomImageView(
-                      imagePath: ImageConstant.imgContrast,
-                      height: 22.v,
-                      width: 20.h,
-                      margin: EdgeInsets.symmetric(vertical: 3.v),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 8.h,
-                        top: 4.v,
-                        bottom: 3.v,
-                      ),
-                      child: Text(
-                        "Credit Card",
-                        style: CustomTextStyles.titleMediumInterPrimary,
-                      ),
-                    ),
-                    Spacer(),
-                    CustomImageView(
-                      imagePath: ImageConstant.imgImage3328x62,
-                      height: 28.v,
-                      width: 62.h,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 17.v),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 10.h,
-                  right: 6.h,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 18.v),
-                      child: CustomRadioButton(
-                        text: " Bank Transfer",
-                        value: " Bank Transfer",
-                        groupValue: radioGroup,
-                        padding: EdgeInsets.symmetric(vertical: 1.v),
-                        onChange: (value) {
-                          radioGroup = value;
-                        },
-                      ),
-                    ),
-                    CustomImageView(
-                      imagePath: ImageConstant.imgImage34,
-                      height: 58.v,
-                      width: 78.h,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20.v),
-              Padding(
-                padding: EdgeInsets.only(left: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomImageView(
-                      imagePath: ImageConstant.imgContrast,
-                      height: 22.v,
-                      width: 20.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 8.h,
-                        top: 2.v,
-                      ),
-                      child: Text(
-                        "PayPal",
-                        style: CustomTextStyles.titleMediumInterPrimary,
-                      ),
-                    ),
-                    Spacer(),
-                    CustomImageView(
-                      imagePath: ImageConstant.imgImage35,
-                      height: 22.v,
-                      width: 84.h,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 27.v),
-              Padding(
-                padding: EdgeInsets.only(left: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomImageView(
-                      imagePath: ImageConstant.imgContrast,
-                      height: 22.v,
-                      width: 20.h,
-                      margin: EdgeInsets.symmetric(vertical: 10.v),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 8.h,
-                        top: 12.v,
-                        bottom: 9.v,
-                      ),
-                      child: Text(
-                        "Cryptocurrency",
-                        style: CustomTextStyles.titleMediumInterPrimary,
-                      ),
-                    ),
-                    Spacer(),
-                    CustomImageView(
-                      imagePath: ImageConstant.imgImage36,
-                      height: 42.adaptSize,
-                      width: 42.adaptSize,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        _buildSectionTitle("Payment Method"),
+        SizedBox(height: 32.v),
+        _buildPaymentOption("Credit Card", ImageConstant.imgImage3328x62),
+        _buildPaymentOption("Bank Transfer", ImageConstant.imgImage34),
+        _buildPaymentOption("PayPal", ImageConstant.imgImage35),
+        _buildCryptocurrencyOption(),
       ],
     );
   }
 
-  /// Section Widget
-  Widget _buildTotalSection(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(
-            top: 5.v,
-            bottom: 4.v,
-          ),
-          child: Text(
-            "Total",
-            style: CustomTextStyles.titleMediumGray500,
-          ),
-        ),
-        Text(
-          "25.25",
-          style: theme.textTheme.headlineSmall,
-        ),
-      ],
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: EdgeInsets.only(left: 6.h),
+      child: Text(
+        title,
+        style: CustomTextStyles.titleLargeBlack900,
+      ),
     );
   }
 
-  /// Section Widget
+  Widget _buildPaymentOption(String label, String imagePath) {
+    return Padding(
+      padding: EdgeInsets.only(left: 6.h),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 10.h, right: 5.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomImageView(
+                  imagePath: ImageConstant.imgContrast,
+                  height: 22.v,
+                  width: 20.h,
+                  margin: EdgeInsets.symmetric(vertical: 3.v),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 8.h, top: 4.v, bottom: 3.v),
+                  child: Text(
+                    label,
+                    style: CustomTextStyles.titleMediumInterPrimary,
+                  ),
+                ),
+                Spacer(),
+                CustomImageView(
+                  imagePath: imagePath,
+                  height: 28.v,
+                  width: 62.h,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 16.v),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCryptocurrencyOption() {
+    return Padding(
+      padding: EdgeInsets.only(left: 10.h, right: 6.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 18.v),
+            child: CustomRadioButton(
+              text: "Cryptocurrency",
+              value: "Cryptocurrency",
+              groupValue: radioGroup,
+              onChange: (value) {
+                radioGroup = value;
+              },
+            ),
+          ),
+          CustomImageView(
+            imagePath: ImageConstant.imgImage36,
+            height: 42.adaptSize,
+            width: 42.adaptSize,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildDonateButton(BuildContext context) {
     return CustomElevatedButton(
       text: "Donate",
+      onPressed: () => launch("metamask:"),
       margin: EdgeInsets.only(
+        top: 6.h,
         left: 16.h,
         right: 16.h,
-        bottom: 11.v,
+        bottom: 16.v,
       ),
       buttonStyle: CustomButtonStyles.fillLightGreenTL8,
-      buttonTextStyle: CustomTextStyles.titleMediumBlack900,
     );
+  }
+
+  onTapArrowLeft(BuildContext context) {
+    Navigator.pop(context);
   }
 }

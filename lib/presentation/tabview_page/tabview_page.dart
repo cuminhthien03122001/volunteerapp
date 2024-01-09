@@ -72,7 +72,7 @@ class TabviewPageState extends State<TabviewPage>
       child: IntrinsicWidth(
         child: SizedBox(
           height: 300.v,
-          width: 1100.h,
+          width: 1500.h,
           child: Row(
             children: activities.map((activity) {
               return Row(
@@ -211,6 +211,7 @@ class TabviewPageState extends State<TabviewPage>
 
   /// Navigates to the detailScreen when the action is triggered.
   onTapFrame1(BuildContext context, VolunteerActivity activity) {
+    print(activity.contract.contractAddress);
     Navigator.push(
       context,
       MaterialPageRoute(

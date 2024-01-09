@@ -172,7 +172,7 @@ class HomeScreenPageState extends State<HomeScreenPage>
                   ),
                   Tab(
                     child: Text(
-                      "Environment",
+                      "Enviroment",
                     ),
                   ),
                 ],
@@ -186,7 +186,7 @@ class HomeScreenPageState extends State<HomeScreenPage>
                   TabviewPage(tags: ["Education"]),
                   TabviewPage(tags: ["Health"]),
                   TabviewPage(tags: ["Animal"]),
-                  TabviewPage(tags: ["Environment"]),
+                  TabviewPage(tags: ["Enviroments"]),
                 ],
               ),
             ),

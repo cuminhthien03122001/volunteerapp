@@ -56,7 +56,6 @@ class AppRoutes {
     signupScreen: (context) => SignupScreen(),
     loginScreen: (context) => LoginScreen(),
     bottomnavigationScreen: (context) => BottomnavigationScreen(),
-    paymethodScreen: (context) => PaymethodScreen(),
     exploreScreen: (context) => ExploreScreen(),
     activityScreen: (context) => ActivityScreen(),
     profileScreen: (context) => ProfileScreen(),

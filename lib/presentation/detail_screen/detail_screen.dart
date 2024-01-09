@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:volunteerapp/core/app_export.dart';
 import 'package:volunteerapp/core/models/volunteerActivity.dart';
 import 'package:volunteerapp/presentation/inputnumber_screen_bottomsheet/inputnumber_screen_bottomsheet.dart';
+import 'package:volunteerapp/presentation/paymethod_screen/paymethod_screen.dart';
 import 'package:volunteerapp/presentation/paysuccess_screen_bottomsheet/paysuccess_screen_bottomsheet.dart';
 import 'package:volunteerapp/widgets/custom_elevated_button.dart';
 import 'package:volunteerapp/widgets/custom_icon_button.dart';
@@ -81,8 +82,9 @@ class DetailScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                PaysuccessScreenBottomsheet()),
+                          builder: (context) =>
+                              PaymethodScreen(activity: activity),
+                        ),
                       );
                     },
                   ),

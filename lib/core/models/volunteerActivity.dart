@@ -16,6 +16,7 @@ class VolunteerActivity {
   DateTime endDate;
   String image;
   List<Tag> tags;
+  Contract contract;
 
   VolunteerActivity({
     required this.id,
@@ -26,6 +27,7 @@ class VolunteerActivity {
     required this.endDate,
     required this.image,
     required this.tags,
+    required this.contract,
   });
 
   factory VolunteerActivity.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,9 @@ class VolunteerActivity {
       endDate: DateTime.parse(json["end_date"]),
       image: json["image"],
       tags: List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
+      contract: json.containsKey("contract")
+          ? Contract.fromJson(json["contract"])
+          : Contract(contractAddress: ""),
     );
   }
 
@@ -52,6 +57,23 @@ class VolunteerActivity {
         "end_date": endDate.toIso8601String(),
         "image": image,
         "tags": List<dynamic>.from(tags.map((x) => x.toJson())),
+        "contract": contract.toJson(),
+      };
+}
+
+class Contract {
+  String contractAddress;
+
+  Contract({
+    required this.contractAddress,
+  });
+
+  factory Contract.fromJson(Map<String, dynamic> json) => Contract(
+        contractAddress: json["contract_address"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "contract_address": contractAddress,
       };
 }
 
